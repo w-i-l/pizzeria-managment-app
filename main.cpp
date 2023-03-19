@@ -90,7 +90,6 @@ class Ingredient{
         bool expirat();
         bool in_stoc();
 
-    
 };
 
 
@@ -170,6 +169,7 @@ Ingredient::Ingredient(const Ingredient &obj){
 
 
 Ingredient::~Ingredient(){
+
     if(this->macronutrienti != NULL){
         delete[] this->macronutrienti;
         this->macronutrienti = NULL;
@@ -179,6 +179,7 @@ Ingredient::~Ingredient(){
         delete[] this->nume;
         this->nume = NULL;
     }
+    
 }
 
 
@@ -310,7 +311,6 @@ Ingredient Ingredient::operator +(const Ingredient &obj){
 }
 
 
-
 // returns the quantity
 Ingredient::operator float()const{
 
@@ -378,9 +378,7 @@ istream& operator>>(istream& in, Ingredient& obj){
     cout << "Macronutrienti: ";
     obj.macronutrienti = new int[3];
     in >> obj.macronutrienti[0];
-    // cout << " ";
     in >> obj.macronutrienti[1]; 
-    // cout << " ";
     in >> obj.macronutrienti[2];
     cout << endl;
 
@@ -409,6 +407,7 @@ bool Ingredient::expirat(){
 
     return current_date - this->data_expirarii > 0;
 }
+
 
 // returneaza 1 daca este in stoc
 bool Ingredient::in_stoc(){
@@ -984,8 +983,10 @@ Angajat::Angajat(){
 
     this->sex = 'x';
     this->salariu = 0;
+
     this->nume_job = new char[5];
     strcpy(this->nume_job, "none");
+
     this->numar_pizze_facute = 0;
     this->pizze_facute = NULL;
 }
@@ -1072,6 +1073,7 @@ Angajat::~Angajat(){
     if(this->pizze_facute != NULL){
         delete[] this->pizze_facute;
     }
+
 }
 
 
@@ -1262,7 +1264,9 @@ ostream& operator<<(ostream& out, const Angajat& obj){
 
 istream& operator>>(istream& in, Angajat& obj){
     char aux[100];
+    
     cout << "Introducere angajat: " << endl;
+
     cout << "Nume: ";
     in >> aux;
     obj.nume = new char[strlen(aux)+1];
@@ -1276,6 +1280,7 @@ istream& operator>>(istream& in, Angajat& obj){
     cout << "Salariu: ";
     in >> obj.salariu;
     cout << endl;
+
     cout << "Job: ";
     in >> aux;
     obj.nume_job = new char[strlen(aux)+1];
@@ -1350,25 +1355,6 @@ class Pizzerie{
             strcpy(this->nume, nume_nou);
         }
 
-        void adaugare_ingredient(const Ingredient& obj){
-            // verificare daca exista si creste cantitate
-            // daca nu adaugare
-        }
-
-        void stergere_ingredient(const Ingredient& obj){
-            // daca exista il sterge
-            // daca nu exista nu face nimic
-        }
-
-        void adaugare_angajat(const Angajat& obj){
-            // verificare daca exista
-            // daca nu, il adauga
-        }
-
-        void stergere_angajat(const Angajat& obj){
-            // daca exista il sterge
-            // daca nu exista nu face nimic
-        }
 
         // constructori
         Pizzerie();
@@ -1413,12 +1399,16 @@ Pizzerie::Pizzerie(){
 
     this->nume = new char[5];
     strcpy(this->nume, "none");
+
     this->numar_angajati = 0;
     this->angajati = NULL;
+
     this->numar_ingrediente = 0;
     this->ingrediente = NULL;
+
     this->numar_pizze = 0;
     this->pizze = NULL;
+
     this->profit = 0;
 }
 
@@ -1823,79 +1813,107 @@ void Pizzerie::afisare_angajati_cu_jobu(const char* nume_job){
     }
 }
 
+
+void Pizzerie::afisare_joburi(){
+
+    char jobs[20][40];
+    int index = 0, j;
+
+    for(int i=0; i<this->numar_angajati; i++){
+        
+        // iterating through jobs to see if we have 
+        // already added this job
+        for(j=0; j<index; j++)
+            // if yes we break
+            if(strcmp(jobs[j], this->angajati[i].get_nume_job()) == 0)
+                break;
+
+        // if not we add it
+        if(j == index || index == 0)
+            strcpy(jobs[index++],  this->angajati[i].get_nume_job());
+    }
+
+    // listing jobs
+    for(int j=0; j<index; j++)
+        cout << j << ". "<< jobs[j] << endl;
+
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+// initialization with hardcoded value
 Pizzerie init(){
 
     int valori[3];
     Ingredient branza, sunca, oua, ketchup, mozzarella, carnati, ananas, ardei, porumb, masline, pui, rosie;
+
     Pizza salami, casei, hawai, mic_dejun, vegana, taraneasca;
+
     Angajat maria, ion, gica, andrei;
+
     Pizza pizze[20];
     int nr_pizze;
 
     valori[0] = 10; valori[1] = 27; valori[2] = 40;
-     branza = Ingredient("Branza", valori, false, 0.121224, 3);
+    branza = Ingredient("Branza", valori, false, 0.121224, 3);
 
     valori[0] = 5; valori[1] = 7; valori[2] = 10;
-     sunca = Ingredient("Sunca", valori, false, 0.130923, 100);
+    sunca = Ingredient("Sunca", valori, false, 0.130923, 100);
 
     valori[0] = 2; valori[1] = 4; valori[2] = 7;
-     oua = Ingredient("Oua", valori, false, 0.201023, 50);
+    oua = Ingredient("Oua", valori, false, 0.201023, 50);
     
     valori[0] = 12; valori[1] = 4; valori[2] = 9;
-     ketchup = Ingredient("Ketchup", valori, true, 0.011025, 10);
+    ketchup = Ingredient("Ketchup", valori, true, 0.011025, 10);
     
     valori[0] = 1; valori[1] = 1; valori[2] = 1;
-     mozzarella = Ingredient("Mozzarella", valori, false, 0.021123, 25);
+    mozzarella = Ingredient("Mozzarella", valori, false, 0.021123, 25);
 
     valori[0] = 30; valori[1] = 40; valori[2] = 31;
-     carnati = Ingredient("Carnati", valori, false, 0.120324, 30);
+    carnati = Ingredient("Carnati", valori, false, 0.120324, 30);
 
     valori[0] = 11; valori[1] = 11; valori[2] = 11;
-     ananas = Ingredient("Ananas", valori, true, 0.121029, 10);
+    ananas = Ingredient("Ananas", valori, true, 0.121029, 10);
 
     valori[0] = 43; valori[1] = 12; valori[2] = 31;
-     ardei = Ingredient("Ardei", valori, true, 0.041124, 42);
+    ardei = Ingredient("Ardei", valori, true, 0.041124, 42);
 
     valori[0] = 7; valori[1] = 41; valori[2] = 21;
-     porumb = Ingredient("Porumb", valori, true, 0.220125, 15);
+    porumb = Ingredient("Porumb", valori, true, 0.220125, 15);
 
     valori[0] = 19; valori[1] = 21; valori[2] = 13;
-     rosie = Ingredient("Rosie", valori, true, 0.311024, 40);
+    rosie = Ingredient("Rosie", valori, true, 0.311024, 40);
 
     valori[0] = 21; valori[1] = 51; valori[2] = 21;
-     masline = Ingredient("Masline", valori, true, 0.300525, 100);
+    masline = Ingredient("Masline", valori, true, 0.300525, 100);
     
     valori[0] = 51; valori[1] = 21; valori[2] = 11;
-     pui = Ingredient("Pui", valori, true, 0.100225, 20);
+    pui = Ingredient("Pui", valori, true, 0.100225, 20);
     
     Ingredient ingrediente[10] = {mozzarella, ketchup, carnati, rosie, ardei, sunca};
-     salami = Pizza("Salami", 6, ingrediente, 32.5);
+    salami = Pizza("Salami", 6, ingrediente, 32.5);
 
     ingrediente[2] = ananas;
     ingrediente[3] = porumb;
     ingrediente[4] = pui;
-     hawai = Pizza("Hawai", 5, ingrediente, 40);
+    hawai = Pizza("Hawai", 5, ingrediente, 40);
 
     ingrediente[2] = ardei;
     ingrediente[3] = porumb;
     ingrediente[4] = masline;
     ingrediente[5] = sunca;
-     taraneasca = Pizza("Taraneasca", 6, ingrediente, 25);
+    taraneasca = Pizza("Taraneasca", 6, ingrediente, 25);
 
     ingrediente[2] = branza;
     ingrediente[3] = oua;
     ingrediente[4] = pui;
     ingrediente[5] = sunca;
-     mic_dejun = Pizza("Mic-Dejun", 6, ingrediente, 35);
+    mic_dejun = Pizza("Mic-Dejun", 6, ingrediente, 35);
 
     ingrediente[0] = ardei;
     ingrediente[2] = porumb;
     ingrediente[3] = masline;
     ingrediente[4] = rosie;
-     vegana = Pizza("Vegana", 5, ingrediente, 27.5);
+    vegana = Pizza("Vegana", 5, ingrediente, 27.5);
 
     ingrediente[2] = branza;
     ingrediente[3] = oua;
@@ -1926,6 +1944,7 @@ Pizzerie init(){
 }
 
 
+// CLI for manager
 void manager(Pizzerie maestro){
 
     int option;
@@ -1997,12 +2016,15 @@ void manager(Pizzerie maestro){
 
             case 5:
                 
+                maestro.afisare_joburi();
+
                 cout << "Enter job: ";
                 cin >> nume;
                 nume[strlen(nume)]=0;
                 cout << endl;
 
                 maestro.afisare_angajati_cu_jobu(nume);
+                break;
 
             case 6:
 
@@ -2037,10 +2059,11 @@ void manager(Pizzerie maestro){
 }
 
 
+// CLI for client
 void client(Pizzerie maestro){
 
 
-    int option;
+    int option = 1;
     
 
     while(true){
@@ -2059,8 +2082,14 @@ void client(Pizzerie maestro){
 
             case 1:
 
-                for(int i=0; i<maestro.get_numar_pizze(); i++)
+                for(int i=0; i<maestro.get_numar_pizze(); i++){
                     maestro.get_pizze()[i].afisare();
+
+                    if(i != maestro.get_numar_pizze() - 1){
+                        cout << "------------------------------" << endl;
+                    }
+
+                }
                 
                 cout << endl;
                 break;
@@ -2100,7 +2129,9 @@ void client(Pizzerie maestro){
                 cin >> option;
                 cout << endl;
 
-                Sleep(1000);
+                cout << "Announcing the chief..." << endl;
+
+                Sleep(2000);
                 cout << "Preparing..." << endl;
                 
                 Sleep(1000);
@@ -2110,6 +2141,8 @@ void client(Pizzerie maestro){
                 cout << "Ready to be served!" << endl;
 
                 cout << "Done" << endl;
+
+                Beep(523,500);Beep(523,500);Beep(523,500);
                 break;
 
             case 0:
@@ -2119,10 +2152,13 @@ void client(Pizzerie maestro){
             cout << "Enter a valid option!" << endl;
             break;
         }
+        // only one command
+        // break;
     }
 }
 
 
+// main CLI 
 void menu(Pizzerie maestro){
     int option;
 
