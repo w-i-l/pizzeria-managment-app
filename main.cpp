@@ -234,9 +234,9 @@ Ingredient& Ingredient::operator ++(){
 // increment by 1 the quantity
 Ingredient Ingredient::operator ++(int){
 
-    Ingredient coppy(*this);
+    Ingredient copy(*this);
     this->cantitate ++;
-    return coppy;
+    return copy;
 
 }
 
@@ -289,25 +289,25 @@ Ingredient operator-(int a, const Ingredient& obj){
 
 Ingredient Ingredient::operator +(const Ingredient &obj){
 
-    Ingredient coppy(*this);
+    Ingredient copy(*this);
 
-    coppy.cantitate += obj.cantitate;
+    copy.cantitate += obj.cantitate;
     
-    delete[] coppy.nume;
-    coppy.nume = new char[strlen(this->nume) + strlen(obj.nume) + 2];
-    strcpy(coppy.nume, this->nume);
-    strcat(coppy.nume, "&");
-    strcat(coppy.nume, obj.nume);
+    delete[] copy.nume;
+    copy.nume = new char[strlen(this->nume) + strlen(obj.nume) + 2];
+    strcpy(copy.nume, this->nume);
+    strcat(copy.nume, "&");
+    strcat(copy.nume, obj.nume);
 
     for(int i=0; i<3; i++){
-        coppy.macronutrienti[i] += obj.macronutrienti[i];
+        copy.macronutrienti[i] += obj.macronutrienti[i];
     }
 
-    coppy.data_expirarii = min(this->data_expirarii, obj.data_expirarii);
+    copy.data_expirarii = min(this->data_expirarii, obj.data_expirarii);
 
-    coppy.de_post = this->de_post && obj.de_post;
+    copy.de_post = this->de_post && obj.de_post;
 
-    return coppy;
+    return copy;
 }
 
 
@@ -629,9 +629,9 @@ Pizza& Pizza::operator ++(){
 // increases the price
 Pizza Pizza::operator ++(int){
 
-    Pizza coppy(*this);
+    Pizza copy(*this);
     this->pret ++;
-    return coppy;
+    return copy;
 
 }
 
@@ -639,19 +639,19 @@ Pizza Pizza::operator ++(int){
 // add a new ingredient
 Pizza Pizza::operator +(const Ingredient& obj){
 
-    Pizza coppy(*this);
+    Pizza copy(*this);
 
-    Ingredient* aux = new Ingredient[coppy.numar_ingrediente + 1];
+    Ingredient* aux = new Ingredient[copy.numar_ingrediente + 1];
 
-    for(int i=0; i<coppy.numar_ingrediente; i++) aux[i] = coppy.lista_ingrediente[i];
+    for(int i=0; i<copy.numar_ingrediente; i++) aux[i] = copy.lista_ingrediente[i];
 
-    aux[coppy.numar_ingrediente++] = obj;
+    aux[copy.numar_ingrediente++] = obj;
 
-    delete[] coppy.lista_ingrediente;
+    delete[] copy.lista_ingrediente;
 
-    coppy.lista_ingrediente = aux; 
+    copy.lista_ingrediente = aux; 
 
-    return coppy;
+    return copy;
 
 }
 
@@ -660,13 +660,13 @@ Pizza Pizza::operator +(const Ingredient& obj){
 // if not found throw a runtime error
 Pizza Pizza::operator -(const Ingredient& obj){
 
-    Pizza coppy(*this);
+    Pizza copy(*this);
 
-    for(int i=0; i<coppy.numar_ingrediente; i++){
-        if(coppy.lista_ingrediente[i] == obj){
-            coppy.lista_ingrediente[i] = coppy.lista_ingrediente[coppy.numar_ingrediente - 1];
-            coppy.numar_ingrediente --;
-            return coppy;
+    for(int i=0; i<copy.numar_ingrediente; i++){
+        if(copy.lista_ingrediente[i] == obj){
+            copy.lista_ingrediente[i] = copy.lista_ingrediente[copy.numar_ingrediente - 1];
+            copy.numar_ingrediente --;
+            return copy;
         }
     }
 
@@ -678,20 +678,20 @@ Pizza Pizza::operator -(const Ingredient& obj){
 // creates a new pizza concatenating
 Pizza Pizza::operator +(const Pizza &obj){
 
-    Pizza coppy(*this);
+    Pizza copy(*this);
 
-    char* nume = new char[strlen(coppy.nume) + strlen(obj.nume) + 4];
+    char* nume = new char[strlen(copy.nume) + strlen(obj.nume) + 4];
     strcpy(nume, this->nume);
     strcat(nume, " & ");
     strcat(nume, obj.nume);
 
-    delete[] coppy.nume;
-    coppy.nume = nume;
+    delete[] copy.nume;
+    copy.nume = nume;
 
-    coppy.pret += obj.pret;
+    copy.pret += obj.pret;
 
-    coppy.numar_ingrediente += obj.numar_ingrediente;
-    Ingredient* aux = new Ingredient[coppy.numar_ingrediente];
+    copy.numar_ingrediente += obj.numar_ingrediente;
+    Ingredient* aux = new Ingredient[copy.numar_ingrediente];
 
     for(int i=0; i<this->numar_ingrediente; i++)
         aux[i] = this->lista_ingrediente[i];
@@ -700,10 +700,10 @@ Pizza Pizza::operator +(const Pizza &obj){
         aux[i + this->numar_ingrediente] = obj.lista_ingrediente[i];
     }
 
-    delete[] coppy.lista_ingrediente;
-    coppy.lista_ingrediente = aux;
+    delete[] copy.lista_ingrediente;
+    copy.lista_ingrediente = aux;
     cout << endl;
-    return coppy;
+    return copy;
 
 }
 
@@ -742,19 +742,19 @@ bool Pizza::operator < (const Pizza &obj){
 // adds a new ingredient
 Pizza operator+(Ingredient a, const Pizza& obj){
 
-    Pizza coppy(obj);
+    Pizza copy(obj);
 
     Ingredient* aux = new Ingredient[obj.numar_ingrediente + 1];
 
-    for(int i=0; i<coppy.numar_ingrediente; i++) aux[i] = coppy.lista_ingrediente[i];
+    for(int i=0; i<copy.numar_ingrediente; i++) aux[i] = copy.lista_ingrediente[i];
 
-    aux[coppy.numar_ingrediente++] = a;
+    aux[copy.numar_ingrediente++] = a;
 
-    delete[] coppy.lista_ingrediente;
+    delete[] copy.lista_ingrediente;
 
-    coppy.lista_ingrediente = aux; 
+    copy.lista_ingrediente = aux; 
 
-    return coppy;
+    return copy;
 
 }
 
@@ -763,13 +763,13 @@ Pizza operator+(Ingredient a, const Pizza& obj){
 // if not found throw a runtime error
 Pizza operator-(Ingredient a, const Pizza& obj){
 
-    Pizza coppy(obj);
+    Pizza copy(obj);
 
-    for(int i=0; i<coppy.numar_ingrediente; i++){
-        if(coppy.lista_ingrediente[i] == a){
-            coppy.lista_ingrediente[i] = coppy.lista_ingrediente[coppy.numar_ingrediente - 1];
-            coppy.numar_ingrediente --;
-            return coppy;
+    for(int i=0; i<copy.numar_ingrediente; i++){
+        if(copy.lista_ingrediente[i] == a){
+            copy.lista_ingrediente[i] = copy.lista_ingrediente[copy.numar_ingrediente - 1];
+            copy.numar_ingrediente --;
+            return copy;
         }
     }
 
@@ -1135,9 +1135,9 @@ Angajat& Angajat::operator ++(){
 // increases salary
 Angajat Angajat::operator ++(int){
 
-    Angajat coppy(*this);
+    Angajat copy(*this);
     this->salariu ++;
-    return coppy;
+    return copy;
 
 }
 
@@ -1145,19 +1145,19 @@ Angajat Angajat::operator ++(int){
 // adds a new pizza
 Angajat Angajat::operator +(const Pizza& obj){
 
-    Angajat coppy(*this);
+    Angajat copy(*this);
 
-    Pizza* aux = new Pizza[coppy.numar_pizze_facute + 1];
+    Pizza* aux = new Pizza[copy.numar_pizze_facute + 1];
 
-    for(int i=0; i<coppy.numar_pizze_facute; i++)
-        aux[i] = coppy.pizze_facute[i];
+    for(int i=0; i<copy.numar_pizze_facute; i++)
+        aux[i] = copy.pizze_facute[i];
     
-    aux[coppy.numar_pizze_facute++] = obj;
+    aux[copy.numar_pizze_facute++] = obj;
 
-    delete[] coppy.pizze_facute;
-    coppy.pizze_facute = aux;
+    delete[] copy.pizze_facute;
+    copy.pizze_facute = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1166,13 +1166,13 @@ Angajat Angajat::operator +(const Pizza& obj){
 // throw an error if not found
 Angajat Angajat::operator -(const Pizza& obj){
 
-    Angajat coppy(*this);
+    Angajat copy(*this);
 
-    for(int i=0; i<coppy.numar_pizze_facute; i++){
-        if(coppy.pizze_facute[i] == obj){
-            coppy.pizze_facute[i] = coppy.pizze_facute[coppy.numar_pizze_facute - 1];
-            coppy.numar_pizze_facute --;
-            return coppy;
+    for(int i=0; i<copy.numar_pizze_facute; i++){
+        if(copy.pizze_facute[i] == obj){
+            copy.pizze_facute[i] = copy.pizze_facute[copy.numar_pizze_facute - 1];
+            copy.numar_pizze_facute --;
+            return copy;
         }
     }
 
@@ -1210,19 +1210,19 @@ bool Angajat::operator < (const Angajat &obj){
 // adds a new pizza
 Angajat operator+(Pizza a, const Angajat& obj){
 
-    Angajat coppy(obj);
+    Angajat copy(obj);
 
-    Pizza* aux = new Pizza[coppy.numar_pizze_facute + 1];
+    Pizza* aux = new Pizza[copy.numar_pizze_facute + 1];
 
-    for(int i=0; i<coppy.numar_pizze_facute; i++)
-        aux[i] = coppy.pizze_facute[i];
+    for(int i=0; i<copy.numar_pizze_facute; i++)
+        aux[i] = copy.pizze_facute[i];
 
-    aux[coppy.numar_pizze_facute++] = a;
+    aux[copy.numar_pizze_facute++] = a;
 
-    delete[] coppy.pizze_facute;
-    coppy.pizze_facute = aux;
+    delete[] copy.pizze_facute;
+    copy.pizze_facute = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1231,13 +1231,13 @@ Angajat operator+(Pizza a, const Angajat& obj){
 // throw an error if not found
 Angajat operator-(Pizza a, const Angajat& obj){
 
-    Angajat coppy(obj);
+    Angajat copy(obj);
 
-    for(int i=0; i<coppy.numar_pizze_facute; i++){
-        if(coppy.pizze_facute[i] == a){
-            coppy.pizze_facute[i] = coppy.pizze_facute[coppy.numar_pizze_facute - 1];
-            coppy.numar_pizze_facute --;
-            return coppy;
+    for(int i=0; i<copy.numar_pizze_facute; i++){
+        if(copy.pizze_facute[i] == a){
+            copy.pizze_facute[i] = copy.pizze_facute[copy.numar_pizze_facute - 1];
+            copy.numar_pizze_facute --;
+            return copy;
         }
     }
 
@@ -1569,9 +1569,9 @@ Pizzerie& Pizzerie::operator ++(){
 // increases profit
 Pizzerie Pizzerie::operator ++(int){
 
-    Pizzerie coppy(*this);
+    Pizzerie copy(*this);
     this->profit ++;
-    return coppy;
+    return copy;
 
 }
 
@@ -1579,19 +1579,19 @@ Pizzerie Pizzerie::operator ++(int){
 // adds an employee
 Pizzerie Pizzerie::operator +(const Angajat& obj){
 
-    Pizzerie coppy(*this);
+    Pizzerie copy(*this);
 
-    Angajat* aux = new Angajat[coppy.numar_angajati + 1];
+    Angajat* aux = new Angajat[copy.numar_angajati + 1];
 
-    for(int i=0; i<coppy.numar_angajati; i++)
-        aux[i] = coppy.angajati[i];
+    for(int i=0; i<copy.numar_angajati; i++)
+        aux[i] = copy.angajati[i];
     
-    aux[coppy.numar_angajati ++ ] = obj;
+    aux[copy.numar_angajati ++ ] = obj;
 
-    delete[] coppy.angajati;
-    coppy.angajati = aux;
+    delete[] copy.angajati;
+    copy.angajati = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1600,13 +1600,13 @@ Pizzerie Pizzerie::operator +(const Angajat& obj){
 // if not found throw an error
 Pizzerie Pizzerie::operator -(const Angajat& obj){
 
-    Pizzerie coppy(*this);
+    Pizzerie copy(*this);
 
-    for(int i=0; i<coppy.numar_angajati; i++){
-        if(coppy.angajati[i] == obj){
-            coppy.angajati[i] = coppy.angajati[coppy.numar_angajati - 1];
-            coppy.numar_angajati --;
-            return coppy;
+    for(int i=0; i<copy.numar_angajati; i++){
+        if(copy.angajati[i] == obj){
+            copy.angajati[i] = copy.angajati[copy.numar_angajati - 1];
+            copy.numar_angajati --;
+            return copy;
         }
     }
 
@@ -1618,19 +1618,19 @@ Pizzerie Pizzerie::operator -(const Angajat& obj){
 // adds an Pizza
 Pizzerie Pizzerie::operator +(const Pizza& obj){
 
-    Pizzerie coppy(*this);
+    Pizzerie copy(*this);
 
-    Pizza* aux = new Pizza[coppy.numar_pizze + 1];
+    Pizza* aux = new Pizza[copy.numar_pizze + 1];
 
-    for(int i=0; i<coppy.numar_pizze; i++)
-        aux[i] = coppy.pizze[i];
+    for(int i=0; i<copy.numar_pizze; i++)
+        aux[i] = copy.pizze[i];
     
-    aux[coppy.numar_pizze ++ ] = obj;
+    aux[copy.numar_pizze ++ ] = obj;
 
-    delete[] coppy.pizze;
-    coppy.pizze = aux;
+    delete[] copy.pizze;
+    copy.pizze = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1639,13 +1639,13 @@ Pizzerie Pizzerie::operator +(const Pizza& obj){
 // if not found throw an error
 Pizzerie Pizzerie::operator -(const Pizza& obj){
 
-    Pizzerie coppy(*this);
+    Pizzerie copy(*this);
 
-    for(int i=0; i<coppy.numar_pizze; i++){
-        if(coppy.pizze[i] == obj){
-            coppy.pizze[i] = coppy.pizze[coppy.numar_pizze - 1];
-            coppy.numar_pizze --;
-            return coppy;
+    for(int i=0; i<copy.numar_pizze; i++){
+        if(copy.pizze[i] == obj){
+            copy.pizze[i] = copy.pizze[copy.numar_pizze - 1];
+            copy.numar_pizze --;
+            return copy;
         }
     }
 
@@ -1683,19 +1683,19 @@ bool Pizzerie::operator < (const Pizzerie &obj){
 Pizzerie operator+(Angajat a, const Pizzerie& obj){
 
 
-    Pizzerie coppy(obj);
+    Pizzerie copy(obj);
 
-    Angajat* aux = new Angajat[coppy.numar_angajati + 1];
+    Angajat* aux = new Angajat[copy.numar_angajati + 1];
 
-    for(int i=0; i<coppy.numar_angajati; i++)
-        aux[i] = coppy.angajati[i];
+    for(int i=0; i<copy.numar_angajati; i++)
+        aux[i] = copy.angajati[i];
     
-    aux[coppy.numar_angajati ++ ] = a;
+    aux[copy.numar_angajati ++ ] = a;
 
-    delete[] coppy.angajati;
-    coppy.angajati = aux;
+    delete[] copy.angajati;
+    copy.angajati = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1704,13 +1704,13 @@ Pizzerie operator+(Angajat a, const Pizzerie& obj){
 // if not found throw an error
 Pizzerie operator-(Angajat a, const Pizzerie& obj){
 
-    Pizzerie coppy(obj);
+    Pizzerie copy(obj);
 
-    for(int i=0; i<coppy.numar_angajati; i++){
-        if(coppy.angajati[i] == a){
-            coppy.angajati[i] = coppy.angajati[coppy.numar_angajati - 1];
-            coppy.numar_angajati --;
-            return coppy;
+    for(int i=0; i<copy.numar_angajati; i++){
+        if(copy.angajati[i] == a){
+            copy.angajati[i] = copy.angajati[copy.numar_angajati - 1];
+            copy.numar_angajati --;
+            return copy;
         }
     }
 
@@ -1723,19 +1723,19 @@ Pizzerie operator-(Angajat a, const Pizzerie& obj){
 Pizzerie operator+(Pizza a, const Pizzerie& obj){
 
 
-    Pizzerie coppy(obj);
+    Pizzerie copy(obj);
 
-    Pizza* aux = new Pizza[coppy.numar_pizze + 1];
+    Pizza* aux = new Pizza[copy.numar_pizze + 1];
 
-    for(int i=0; i<coppy.numar_pizze; i++)
-        aux[i] = coppy.pizze[i];
+    for(int i=0; i<copy.numar_pizze; i++)
+        aux[i] = copy.pizze[i];
     
-    aux[coppy.numar_pizze ++ ] = a;
+    aux[copy.numar_pizze ++ ] = a;
 
-    delete[] coppy.pizze;
-    coppy.pizze = aux;
+    delete[] copy.pizze;
+    copy.pizze = aux;
 
-    return coppy;
+    return copy;
 
 }
 
@@ -1744,13 +1744,13 @@ Pizzerie operator+(Pizza a, const Pizzerie& obj){
 // if not found throw an error
 Pizzerie operator-(Pizza a, const Pizzerie& obj){
 
-    Pizzerie coppy(obj);
+    Pizzerie copy(obj);
 
-    for(int i=0; i<coppy.numar_pizze; i++){
-        if(coppy.pizze[i] == a){
-            coppy.pizze[i] = coppy.pizze[coppy.numar_pizze - 1];
-            coppy.numar_pizze --;
-            return coppy;
+    for(int i=0; i<copy.numar_pizze; i++){
+        if(copy.pizze[i] == a){
+            copy.pizze[i] = copy.pizze[copy.numar_pizze - 1];
+            copy.numar_pizze --;
+            return copy;
         }
     }
 
